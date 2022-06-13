@@ -1,13 +1,13 @@
 # Springboot Restful API demo
 
-#####com.demo02.board
+##### com.demo02.board
 ```
 thymeleaf 활용 간단 예제 입니다.
 게시판 목록기능을 제공합니다.
 ```
 
 
-#####com.demo02.test01
+##### com.demo02.test01
 ```
 간단한 input 예제입니다.
 사용자는 이름을 기준으로 구분합니다.
