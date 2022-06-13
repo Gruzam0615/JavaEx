@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>BoardList</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/BoardList.css}" rel="stylesheet" type="text/css" />
+  </head>  
+  <body>
+  	<table>
+  		<caption>
+  			<span class="hide">게시글 목록</span>
+  		</caption>
+  		<colgroup>
+  			<col style="width:88px">
+  			<col>
+  			<col style="width:118px">
+  			<col style="width:80px">
+  			<col style="widtH:68px">
+  			<col style="width:68px">
+  		</colgroup>
+  		<thead>
+  			<tr>
+  				<th></th>
+  				<th>제목</th>
+  				<th>작성자</th>
+  				<th>작성일</th>
+  				<th>조회</th>
+  				<th>좋아요</th>
+  			</tr>
+  		</thead>
+  		<tbody>
+  			<tr th:each="list : ${list}">
+  				<td th:text="${list.idx}"></td>
+  				<td><a href="#">[[${list.title}]]</a></td>
+  				<td th:text="${list.author}"></td>
+  				<td th:text="${#dates.format(list.createdDate, 'yyyy.MM.dd')}"></td>
+  				<td th:text="${list.count}"></td>
+  				<td th:text="${list.likeCount}"></td>
+  			</tr>
+  		</tbody>
+  	</table>
+  	<div>
+  		<span th:if="${currentPage > pagination.blockCount}">
+  			<a href="#" th:href="@{/boardlist(currentpage=${pagination.previousBlock})}">Prev</a>
+  		</span>
+  		<span th:each="page : ${#numbers.sequence(pagination.blockFirst, pagination.blockLast)}">
+  			<a href="#" th:href="@{/boardlist(currentpage=${page})}">[[${page}]]</a>
+  		</span>
+  		<span th:if="${pagination.blockCount > 10}">
+  			<a href="#" th:href="@{/boardlist(currentpage=${pagination.nextBlock})}">Next</a>
+  		</span>
+  	</div>
+  </body>
+</html>
