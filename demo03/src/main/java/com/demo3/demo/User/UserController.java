@@ -26,11 +26,17 @@ public class UserController {
         return "signup_form";
     }
 
+    /**
+     * 유저 등록
+     * @param user
+     * @return
+     */
     @PostMapping("/process_register")
     public String processRegister(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        user.setUserRole("ADMIN");
 
         userRepository.save(user);
 

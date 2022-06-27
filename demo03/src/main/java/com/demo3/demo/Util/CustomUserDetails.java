@@ -1,8 +1,11 @@
 package com.demo3.demo.Util;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.demo3.demo.User.User;
@@ -17,7 +20,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<SimpleGrantedAuthority> auth = new ArrayList<>();
+        String role = user.getUserRole();
+        auth.add(new SimpleGrantedAuthority(role));
+        return auth;
     }
 
     @Override
@@ -27,7 +33,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getId();
     }
 
     @Override
