@@ -1,7 +1,8 @@
 .DS_Store
+.vscode
 
 # Compiled class file
-.class
+*.class
 bin/
 
 # Log file
