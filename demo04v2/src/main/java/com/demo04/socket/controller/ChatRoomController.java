@@ -2,6 +2,7 @@ package com.demo04.socket.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,67 +15,48 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.demo04.socket.model.ChatRoom;
 import com.demo04.socket.service.ChatService;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Controller
 @RequestMapping("/chat")
 public class ChatRoomController {
-    
-    private final ChatService chatService;
 
-    /**
-     * 채팅 리스트를 보여주는 VIEW
-     * @param model
-     * @return
-     */
+    @Autowired private ChatService chatService;
+
+    // 채팅 리스트 화면
     @GetMapping("/room")
-    public String rooms(Model model) {
+    public String room(Model model) {
         return "/chat/room";
     }
-
-    /**
-     * 모든 채팅방을 목록으로 반환
-     * @return
-     */
+    // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
     @ResponseBody
-    public List<ChatRoom> room() {
+    public List<ChatRoom> rooms() {
         return chatService.findAllRoom();
     }
-
-    /**
-     * 채팅방 생성
-     * @param name
-     * @return
-     */
+    // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
-        return chatService.createRoom(name);
+        return chatService.createRoom(name, Long.parseLong("1"));
     }
+    // @PostMapping("/room")
+    // @ResponseBody
+    // public int createRoom(
+    //     @RequestParam("roomName") String roomName
+    // ) {
+    //     ChatRoom cr = new ChatRoom(roomName, Long.parseLong("1"));
+    //     return chatService.CreateChatRoom(cr);
+    // }
 
-    /**
-     * 채팅방 입장을 위한 VIEW
-     * @param model
-     * @param roomId
-     * @return
-     */
+    // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
         model.addAttribute("roomId", roomId);
         return "/chat/roomdetail";
     }
-
-    /**
-     * 특정 roomId를 갖는 채팅방 조회
-     * @param roomId
-     * @return
-     */
+    // 특정 채팅방 조회
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
         return chatService.findById(roomId);
     }
-
 }

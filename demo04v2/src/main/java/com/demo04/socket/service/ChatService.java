@@ -8,29 +8,32 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo04.socket.model.ChatRoom;
+import com.demo04.socket.repository.ChatRepository;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class ChatService {
-    
-    private Map<String, ChatRoom> chatRooms;
+public class ChatService implements ChatRepository {    
 
+    private Map<String, ChatRoom> chatRooms;
+        
     @PostConstruct
     private void init() {
         chatRooms = new LinkedHashMap<>();
     }
 
+    @Autowired
+    private ChatRepository chatRepository;
+
     /**
      * 모든 채팅방 목록보기
      * @return
-     */
+    */
     public List<ChatRoom> findAllRoom() {
         List<ChatRoom> result = new ArrayList<>(chatRooms.values());
         Collections.reverse(result);
@@ -44,11 +47,12 @@ public class ChatService {
      */
     public ChatRoom findById(String roomId) {
         return chatRooms.get(roomId);
-    }
+    }    
 
-    public ChatRoom createRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
+    public ChatRoom createRoom(String roomName, Long usersIdx) {
+        ChatRoom chatRoom = ChatRoom.create(roomName, usersIdx);
         chatRooms.put(chatRoom.getRoomId(), chatRoom);
+        chatRepository.createChatRoom(chatRoom);
         return chatRoom;
     }
 
